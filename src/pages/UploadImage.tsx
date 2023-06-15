@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Header from "../components/Header";
-import camera from "../assets/camera.svg";
+import image from "../assets/image.svg";
 import chair from "../assets/chair.svg";
 import lamp from "../assets/lamp.svg";
 
@@ -36,7 +36,7 @@ function UploadImage({ setStep, setImgUrl }: InputFieldProps) {
           htmlFor="img"
           className="w-4/5 h-3/5 border-2 border-dashed flex items-center justify-center cursor-pointer"
         >
-          <img src={camera} alt="camera" />
+          <img src={image} alt="image" />
           <input
             className="hidden"
             type="file"
