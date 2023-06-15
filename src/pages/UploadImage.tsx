@@ -28,7 +28,7 @@ function UploadImage({ setStep, setImgUrl }: InputFieldProps) {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-start gap-[80px] bg-[url('./assets/background.svg')]">
+    <div className="h-screen flex flex-col items-center justify-start gap-[100px] bg-[url('./assets/background.svg')]">
       <Header />
       <div className="relative w-[700px] h-[625px] flex flex-col justify-center items-center gap-12 rounded-md bg-white">
         <label
