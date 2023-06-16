@@ -7,15 +7,17 @@ import lamp from "../assets/lamp.svg";
 interface InputFieldProps {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   setImgUrl: React.Dispatch<React.SetStateAction<null | string>>;
+  setOriginalImg: React.Dispatch<React.SetStateAction<null | File>>;
 }
 
-function UploadImage({ setStep, setImgUrl }: InputFieldProps) {
+function UploadImage({ setStep, setImgUrl, setOriginalImg }: InputFieldProps) {
   const labelRef = useRef<HTMLLabelElement>(null);
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
+      setOriginalImg(file);
       setImgUrl(imageUrl);
     }
     setStep(1);
