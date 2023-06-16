@@ -9,8 +9,13 @@ interface StylingsProps {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function Stylings({ setStep, imgUrl, originalImg }: StylingsProps) {
-  const [stylingsImgs, setStylingsImgs] = useState<any[]>([]);
+interface StylingsImgType {
+  url: string;
+  style: string;
+}
+
+function Stylings({ imgUrl, originalImg }: StylingsProps) {
+  const [stylingsImgs, setStylingsImgs] = useState<StylingsImgType[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
   const generateImagesWithStyles = async (imageFile: File) => {
@@ -19,7 +24,7 @@ function Stylings({ setStep, imgUrl, originalImg }: StylingsProps) {
     const image = (await fileToBlob(imageFile)) as File;
     form.append("image", image);
 
-    const { data }: { data: any } = await axios.post(
+    const { data }: { data: StylingsImgType[] } = await axios.post(
       "https://explore-sticker-ai-api.dumdumgenius.com/controlnet-canny",
       form,
       {
@@ -30,7 +35,7 @@ function Stylings({ setStep, imgUrl, originalImg }: StylingsProps) {
     );
     setIsFetching(false);
     setStylingsImgs(data);
-    console.log("data", data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -41,10 +46,29 @@ function Stylings({ setStep, imgUrl, originalImg }: StylingsProps) {
   return isFetching ? (
     <Loading />
   ) : (
-    <div>
-      {stylingsImgs.map((img) => (
-        <img src={img.url} alt="styling" />
-      ))}
+    <div className="w-screen h-screen flex flex-col bg-[#E8E4E1]">
+      <div>
+        <button>Back</button>
+        <button>Next</button>
+      </div>
+      <div className="w-screen px-6 py-2 flex flex-row items-center justify-center gap-10">
+        <img
+          src={imgUrl}
+          alt="original"
+          className="w-[800px] h-[600px] object-contain"
+        />
+        <div className="w-[250px] h-screen flex flex-col">
+          <img src={imgUrl} alt="original" className="object-contain" />
+          {stylingsImgs.map((img) => (
+            <img
+              key={img.url}
+              src={img.url}
+              alt="styling"
+              className="object-contain"
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
