@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { fetchStylingImage } from "../utils/api";
+import { fileToBlob } from "../utils/api";
+import Loading from "./Loading";
 
 interface StylingsProps {
   imgUrl: string;
@@ -8,18 +10,40 @@ interface StylingsProps {
 }
 
 function Stylings({ setStep, imgUrl, originalImg }: StylingsProps) {
-  const [stylingsImgs, setStylingsImgs] = useState<string[]>([]);
+  const [stylingsImgs, setStylingsImgs] = useState<any[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const generateImagesWithStyles = async (imageFile: File) => {
+    setIsFetching(true);
+    const form = new FormData();
+    const image = (await fileToBlob(imageFile)) as File;
+    form.append("image", image);
+
+    const { data }: { data: any } = await axios.post(
+      "https://explore-sticker-ai-api.dumdumgenius.com/controlnet-canny",
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    setIsFetching(false);
+    setStylingsImgs(data);
+    console.log("data", data);
+  };
+
   useEffect(() => {
-    fetchStylingImage(originalImg as File).then((res) => {
-      console.log(res);
-      //   setStylingsImgs(res);
-    });
+    if (!originalImg) return;
+    generateImagesWithStyles(originalImg);
   }, [originalImg]);
 
-  return (
+  return isFetching ? (
+    <Loading />
+  ) : (
     <div>
       {stylingsImgs.map((img) => (
-        <img src={img} alt="styling" />
+        <img src={img.url} alt="styling" />
       ))}
     </div>
   );
