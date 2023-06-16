@@ -46,10 +46,14 @@ function Stylings({ imgUrl, originalImg }: StylingsProps) {
   return isFetching ? (
     <Loading />
   ) : (
-    <div className="w-screen h-screen flex flex-col bg-[#E8E4E1]">
-      <div>
-        <button>Back</button>
-        <button>Next</button>
+    <div className="w-screen h-full flex flex-col gap-5 bg-[#E8E4E1]">
+      <div className="w-full px-5 flex justify-between text-white font-semibold">
+        <button className="w-[124px] h-[54px] uppercase bg-[#5B6B62] rounded-lg">
+          Back
+        </button>
+        <button className="w-[124px] h-[54px] uppercase bg-[#CC7541] rounded-lg">
+          Next
+        </button>
       </div>
       <div className="w-screen px-6 py-2 flex flex-row items-center justify-center gap-10">
         <img
@@ -57,7 +61,7 @@ function Stylings({ imgUrl, originalImg }: StylingsProps) {
           alt="original"
           className="w-[800px] h-[600px] object-contain"
         />
-        <div className="w-[250px] h-screen flex flex-col">
+        <div className="w-[250px] flex flex-col">
           <img src={imgUrl} alt="original" className="object-contain" />
           {stylingsImgs.map((img) => (
             <img
